@@ -1,10 +1,10 @@
-# ChosungProj
+# ChosungProj <br>
 초성/단어퀴즈
 
-#Structure
-Android(JAVA) <-> MySQL
+#Structure  <br>
+Android(JAVA) <-> MySQL <br>
 
-#Screen Lists
+#Screen Lists <br>
 [x] 메인화면 <br>
 [] 설정화면 <br>
   [x] 밝기조절  <br>
