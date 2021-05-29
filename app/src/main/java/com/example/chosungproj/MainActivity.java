@@ -15,10 +15,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button settingButton = (Button)findViewById(R.id.setting);
-        Button chosungButton = (Button)findViewById(R.id.chosunggame);
-        Button wordButton = (Button)findViewById(R.id.wordgame);
-        Button recordButton = (Button)findViewById(R.id.record);
+        Button settingButton = findViewById(R.id.setting);
+        Button chosungButton = findViewById(R.id.chosunggame);
+        Button wordButton = findViewById(R.id.wordgame);
+        Button recordButton = findViewById(R.id.record);
 
         new XmlParser().execute();
 

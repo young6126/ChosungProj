@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "141319406676",
+    "project_id": "chosung-e2700",
+    "storage_bucket": "chosung-e2700.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141319406676:android:f2aa0dc4545accff8f99c1",
+        "android_client_info": {
+          "package_name": "om.example.chosungproj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141319406676-p608hcubf8udcfscotdg2osh26ltik06.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "om.example.chosungproj",
+            "certificate_hash": "1a0a257db1e95ab047e570202d6216d6e9a71b2b"
+          }
+        },
+        {
+          "client_id": "141319406676-ehrptjbjbj840bgr1a8pber8dhdf1m9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRjYaQ8YREAyPN1eORGy0nxfbshPL3zzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141319406676-ehrptjbjbj840bgr1a8pber8dhdf1m9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,6 +20,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class XmlParser extends AsyncTask<String, Void, Document> {
     URL url;
+    static String[][] definition_list;
+    static String[] word_list;
     Document doc;
     @Override
     protected Document doInBackground(String... strings) {
@@ -31,13 +33,14 @@ public class XmlParser extends AsyncTask<String, Void, Document> {
             doc.getDocumentElement().normalize();
             String s = "";
             NodeList nodelist = doc.getElementsByTagName("item");
+
             Log.v("nodelist", String.valueOf(nodelist.getLength()));
             for(int i=0;i<nodelist.getLength();i++){
                 Node node = nodelist.item(i);
                 Element fstElmnt = (Element)node;
 
                 NodeList sense = fstElmnt.getElementsByTagName("definition");
-                s = "sense = "+ sense.item(0).getChildNodes().item(0).getNodeValue();
+                s =  sense.item(0).getChildNodes().item(0).getNodeValue();
                 Log.v("parse", s);
             }
 
