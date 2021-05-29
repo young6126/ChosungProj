@@ -19,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
         Button chosungButton = (Button)findViewById(R.id.chosunggame);
         Button wordButton = (Button)findViewById(R.id.wordgame);
         Button recordButton = (Button)findViewById(R.id.record);
-        //test
+
+        new XmlParser().execute();
+
         settingButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
