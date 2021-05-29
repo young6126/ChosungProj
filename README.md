@@ -14,6 +14,7 @@ Android(JAVA) <-> MySQL <br>
 [] 단어게임화면 <br>
 [] 초성게임화면 <br>
 [] 기록화면 <br>
+[x] firestore 연동 <br>
 
 
 
