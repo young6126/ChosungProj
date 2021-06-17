@@ -9,7 +9,6 @@
         android:id="@+id/ScreenLight"
         android:layout_width="271dp"
         android:layout_height="36dp"
-        android:layout_marginTop="160dp"
         android:max="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,12 +16,12 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="328dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="76dp"
-        android:text="TextView"
+        android:layout_width="168dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="64dp"
+        android:text="화면 밝기"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.288"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
