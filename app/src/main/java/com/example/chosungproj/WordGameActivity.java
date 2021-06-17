@@ -1,25 +1,149 @@
 package com.example.chosungproj;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import java.io.InputStream;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-import org.jetbrains.annotations.NotNull;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
 
-import java.util.Map;
+
 
 public class WordGameActivity extends AppCompatActivity {
+    XmlPullParser xpp;
+   /* String key = "86F3B8C49B9C4187A83294E47AA9058F";*/
+    Boolean data;
+    String[] wordlist = new String[]{"가랫밥", "가맛밥", "가윗밥", "가첨밥",
+            "간질밥", "갈큇밥", "감자밥", "감투밥", "강정밥", "강조밥"};
+    String[] chosungList1 = new String[]{"ㄱ", "ㄱ", "ㄱ", "ㄱ",
+            "ㄱ", "ㄱ", "ㄱ", "ㄱ", "ㄱ", "ㄱ"};
+    String[] chosungList2 = new String[]{"ㄹ", "ㅁ", "ㅇ", "ㅊ",
+            "ㅈ", "ㅋ", "ㅈ", "ㅌ", "ㅈ", "ㅈ"};
+    String[] chosungList3 = new String[]{"ㅂ", "ㅂ", "ㅂ", "ㅂ",
+            "ㅂ", "ㅂ", "ㅂ", "ㅂ", "ㅂ", "ㅂ"};
+    String[] defineList = new String[] {"가래로 떠낸 흙의 덩이", "가마솥에 지은 밥", "천 끝단에 가위로 벤 자리를 넣는 일",
+            "먹을 만큼 먹은 뒤에 더 먹는 밥", "간지럼", "갈퀴로 긁어모은 검불이나 갈잎","감자로 지은 밥",
+            "밥을 그릇에 어떻게 담는가에 따라서 불려진 이름으로 밥그릇 위까지 소복하게 올라오도록 높이 담은 밥을 말한다",
+            "강정을 만들기 위하여 찹쌀을 물에 불려 시루에 찐 밥", "좁쌀로만 지은 밥"
+    };
+
+    Button button1;
+    TextView textView, chosung1, chosung2, chosung3, define;
+    EditText edittext1;
+    int answerint = 0;
+    int numberint = 0;
+
+    private CountDownTimer countdownTimer;
+    private TextView countdownText;
+    private long timeLeftInMilliseconds = 60000; //10 mins
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.wordgame_view);
+
+        button1 = (Button) findViewById(R.id.button1);
+        textView = (TextView) findViewById(R.id.text1);
+        edittext1 = (EditText) findViewById(R.id.edittext1);
+        chosung1 = (TextView) findViewById(R.id.chosung1);
+        chosung2 = (TextView) findViewById(R.id.chosung2);
+        chosung3 = (TextView) findViewById(R.id.chosung3);
+        define = (TextView) findViewById(R.id.word_define);
+        textView.setText("정답 수 : " + String.valueOf(answerint) + " / " + String.valueOf(numberint));
+        chosung1.setText(chosungList1[0]);
+        chosung2.setText(chosungList2[0]);
+        chosung3.setText(chosungList3[0]);
+        define.setText(defineList[0]);
+
+        countdownText = findViewById(R.id.chosung_timer);
+
+        startTimer();
+
+        startTimer();
+    }
+
+    private void startTimer() {
+        countdownTimer = new CountDownTimer(timeLeftInMilliseconds, 1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMilliseconds = l;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish() {
+                textView.setText("끝");
+                chosung1.setVisibility(View.INVISIBLE);
+                chosung2.setVisibility(View.INVISIBLE);
+                chosung3.setVisibility(View.INVISIBLE);
+                define.setVisibility(View.INVISIBLE);
+                edittext1.setVisibility(View.INVISIBLE);
+                button1.setVisibility(View.INVISIBLE);
+            }
+        }.start();
+
+
+    }
+    public void updateTimer(){
+        int minutes = (int)timeLeftInMilliseconds/60000;
+        int seconds = (int)timeLeftInMilliseconds% 60000 / 1000;
+
+        String timeLeftText;
+
+        timeLeftText= "" + minutes;
+        timeLeftText +=":";
+        if(seconds<10) timeLeftText+="0";
+        timeLeftText += seconds;
+
+        countdownText.setText(timeLeftText);
+    }
+
+
+    public void mOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.button1:
+                CheckAnswer(edittext1.getText().toString());
+                edittext1.setText(null);
+                textView.setText("정답 수 : " + String.valueOf(answerint) + " / " + String.valueOf(numberint));
+                if (numberint == 10) {
+                    chosung1.setVisibility(View.INVISIBLE);
+                    chosung2.setVisibility(View.INVISIBLE);
+                    chosung3.setVisibility(View.INVISIBLE);
+                    define.setVisibility(View.INVISIBLE);
+                    edittext1.setVisibility(View.INVISIBLE);
+                    button1.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    chosung1.setText(chosungList1[numberint]);
+                    chosung2.setText(chosungList2[numberint]);
+                    chosung3.setText(chosungList3[numberint]);
+                    define.setText(defineList[numberint]);
+                }
+                break;
+        }
+    }
+
+    void CheckAnswer(String s) {
+        if (s.equals(wordlist[numberint])) {
+            answerint += 1;
+        }
+        numberint += 1;
+    }
+}
+
+
+/*public class WordGameActivity extends AppCompatActivity {
 
     static String[] word_list = new String[100];
     static String[] definition_list = new String[100];
@@ -94,4 +218,4 @@ public class WordGameActivity extends AppCompatActivity {
         }
 
     }
-}
+}*/
