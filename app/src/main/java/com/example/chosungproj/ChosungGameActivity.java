@@ -2,6 +2,7 @@ package com.example.chosungproj;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,9 @@ public class ChosungGameActivity extends AppCompatActivity {
     int answerint = 0;
     int numberint = 0;
 
+    private CountDownTimer countdownTimer;
+    private TextView countdownText;
+    private long timeLeftInMilliseconds = 60000; //10 mins
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,47 @@ public class ChosungGameActivity extends AppCompatActivity {
         chosung1.setText(chosungList1[0]);
         chosung2.setText(chosungList2[0]);
         chosung3.setText(chosungList3[0]);
+
+        countdownText = findViewById(R.id.chosung_timer);
+
+        startTimer();
     }
+
+    private void startTimer() {
+        countdownTimer = new CountDownTimer(timeLeftInMilliseconds, 1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMilliseconds = l;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish() {
+                textView.setText("끝");
+                chosung1.setVisibility(View.INVISIBLE);
+                chosung2.setVisibility(View.INVISIBLE);
+                chosung3.setVisibility(View.INVISIBLE);
+                edittext1.setVisibility(View.INVISIBLE);
+                button1.setVisibility(View.INVISIBLE);
+            }
+        }.start();
+
+
+    }
+    public void updateTimer(){
+        int minutes = (int)timeLeftInMilliseconds/60000;
+        int seconds = (int)timeLeftInMilliseconds% 60000 / 1000;
+
+        String timeLeftText;
+
+        timeLeftText= "" + minutes;
+        timeLeftText +=":";
+        if(seconds<10) timeLeftText+="0";
+        timeLeftText += seconds;
+
+        countdownText.setText(timeLeftText);
+    }
+
 
     public void mOnClick(View v) {
         switch (v.getId()) {
