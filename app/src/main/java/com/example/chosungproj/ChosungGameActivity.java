@@ -39,7 +39,7 @@ public class ChosungGameActivity extends AppCompatActivity {
 
     private CountDownTimer countdownTimer;
     private TextView countdownText;
-    private long timeLeftInMilliseconds = 600000; //10 mins
+    private long timeLeftInMilliseconds = 60000; //10 mins
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +71,12 @@ public class ChosungGameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                textView.setText("끝");
+                chosung1.setVisibility(View.INVISIBLE);
+                chosung2.setVisibility(View.INVISIBLE);
+                chosung3.setVisibility(View.INVISIBLE);
+                edittext1.setVisibility(View.INVISIBLE);
+                button1.setVisibility(View.INVISIBLE);
             }
         }.start();
 
