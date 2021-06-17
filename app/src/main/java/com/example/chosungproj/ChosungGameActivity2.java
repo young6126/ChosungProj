@@ -52,30 +52,30 @@ public class ChosungGameActivity2 extends AppCompatActivity {
         chosung3.setText(chosungList3[0]);
     }
 
-    public void mOnClick(View v) {
+    public void mOnClick(View v) { // 클릭 시 이벤트 설정
         switch (v.getId()) {
-            case R.id.button1:
+            case R.id.button1: // 버튼 클릭 시
                 CheckAnswer(edittext1.getText().toString());
-                if(numberint == 10) {
+                if(numberint == 10) { // 10이라면
                 }
                 edittext1.setText(null);
-                textView.setText(String.valueOf(answerint)+String.valueOf(numberint));
-                chosung1.setText(chosungList1[numberint]);
+                textView.setText(String.valueOf(answerint)+String.valueOf(numberint)); // 정답 값 수정
+                chosung1.setText(chosungList1[numberint]); // 초성칸 1,2,3 수정
                 chosung2.setText(chosungList2[numberint]);
                 chosung3.setText(chosungList3[numberint]);
                 break;
         }
     }
-    void CheckAnswer(String s) {
+    void CheckAnswer(String s) { // 스레드를 이용하여 구성
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     data=getXmlData(s);
-                    if(data.equals(true)) {
-                        answerint += 1;
+                    if(data.equals(true)) { //국어사전에 실제로 존재하는 단어일 경우
+                        answerint += 1; //answer 값을 1 증가시켜 답의 값을 1 증가시킴
                     }
-                    numberint += 1;
+                    numberint += 1; // 정답에 상관없이 number값은 1 증가
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -83,7 +83,7 @@ public class ChosungGameActivity2 extends AppCompatActivity {
                 }).start();
     }
 
-    Boolean getXmlData(String search) throws UnsupportedEncodingException {
+    Boolean getXmlData(String search) throws UnsupportedEncodingException { //xml 데이터 파싱
         String tosearch = URLEncoder.encode(search, "UTF-8");
         String queryUrl="https://stdict.korean.go.kr/api/search.do"
                 +"?key="+key
