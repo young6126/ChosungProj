@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ChosungProj</string>
+    <string name="userenter_nickname_edit">8자 이하의 닉네임을 입력하세요</string>
+    <string name="userenter_age">나이를 입력하세요</string>
+
+
 </resources>

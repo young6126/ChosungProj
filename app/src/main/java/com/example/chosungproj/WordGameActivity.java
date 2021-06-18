@@ -1,6 +1,5 @@
 package com.example.chosungproj;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.io.InputStream;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +62,7 @@ public class WordGameActivity extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     public Map<String, List> map = new HashMap<>();
     public List<String> listData = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +124,7 @@ public class WordGameActivity extends AppCompatActivity {
                 chosung3.setVisibility(View.INVISIBLE);
                 edittext1.setVisibility(View.INVISIBLE);
                 button1.setVisibility(View.INVISIBLE);
+                define.setVisibility(View.INVISIBLE);
             }
         }.start();
 
