@@ -41,12 +41,12 @@ public class ChosungGameActivity2 extends AppCompatActivity {
         /*setContentView(R.layout.chosunggame_view);*/
 
         button1 = (Button) findViewById(R.id.button1);
-        textView = (TextView) findViewById(R.id.text1);
+        textView = (TextView) findViewById(R.id.chosung_score);
         edittext1 = (EditText) findViewById(R.id.edittext1);
         chosung1 = (TextView) findViewById(R.id.chosung1);
         chosung2 = (TextView) findViewById(R.id.chosung2);
         chosung3 = (TextView) findViewById(R.id.chosung3);
-        textView.setText("정답 수 : "+String.valueOf(answerint)+" / "+String.valueOf(numberint));
+        textView.setText("정답 수 : "+ answerint +" / "+ numberint);
         chosung1.setText(chosungList1[0]);
         chosung2.setText(chosungList2[0]);
         chosung3.setText(chosungList3[0]);
@@ -59,7 +59,7 @@ public class ChosungGameActivity2 extends AppCompatActivity {
                 if(numberint == 10) { // 10이라면
                 }
                 edittext1.setText(null);
-                textView.setText(String.valueOf(answerint)+String.valueOf(numberint)); // 정답 값 수정
+                textView.setText(String.valueOf(answerint)+ numberint); // 정답 값 수정
                 chosung1.setText(chosungList1[numberint]); // 초성칸 1,2,3 수정
                 chosung2.setText(chosungList2[numberint]);
                 chosung3.setText(chosungList3[numberint]);
