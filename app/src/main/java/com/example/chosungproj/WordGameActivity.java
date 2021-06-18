@@ -62,6 +62,7 @@ public class WordGameActivity extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     public Map<String, List> map = new HashMap<>();
     public List<String> listData = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +124,7 @@ public class WordGameActivity extends AppCompatActivity {
                 chosung3.setVisibility(View.INVISIBLE);
                 edittext1.setVisibility(View.INVISIBLE);
                 button1.setVisibility(View.INVISIBLE);
+                define.setVisibility(View.INVISIBLE);
             }
         }.start();
 
