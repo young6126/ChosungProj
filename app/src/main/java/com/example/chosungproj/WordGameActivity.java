@@ -3,22 +3,33 @@ package com.example.chosungproj;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.io.InputStream;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class WordGameActivity extends AppCompatActivity {
@@ -40,7 +51,7 @@ public class WordGameActivity extends AppCompatActivity {
     };
 
     Button button1;
-    TextView textView, chosung1, chosung2, chosung3, define;
+    TextView word_score, chosung1, chosung2, chosung3, define;
     EditText edittext1;
     int answerint = 0;
     int numberint = 0;
@@ -48,19 +59,28 @@ public class WordGameActivity extends AppCompatActivity {
     private CountDownTimer countdownTimer;
     private TextView countdownText;
     private long timeLeftInMilliseconds = 60000; //10 mins
+    private boolean timerRunning;
+
+    //점수 기록을 위한 변수
+    public String timeLeftText;
+
+    //파이어스토어 저장
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public Map<String, List> map = new HashMap<>();
+    public List<String> listData = new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordgame_view);
 
         button1 = (Button) findViewById(R.id.button1);
-        textView = (TextView) findViewById(R.id.text1);
+        word_score = (TextView) findViewById(R.id.word_score);
         edittext1 = (EditText) findViewById(R.id.edittext1);
         chosung1 = (TextView) findViewById(R.id.chosung1);
         chosung2 = (TextView) findViewById(R.id.chosung2);
         chosung3 = (TextView) findViewById(R.id.chosung3);
         define = (TextView) findViewById(R.id.word_define);
-        textView.setText("정답 수 : " + String.valueOf(answerint) + " / " + String.valueOf(numberint));
+        word_score.setText("정답 수 : " + answerint + " / " + numberint);
         chosung1.setText(chosungList1[0]);
         chosung2.setText(chosungList2[0]);
         chosung3.setText(chosungList3[0]);
@@ -70,9 +90,22 @@ public class WordGameActivity extends AppCompatActivity {
 
         startTimer();
 
-        startTimer();
     }
-
+    private void saveDataToFirestore() {
+        db.collection("game").add(map)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("record", "기록되었습니다.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        Log.d("record", "기록 실패.");
+                    }
+                });
+    }
     private void startTimer() {
         countdownTimer = new CountDownTimer(timeLeftInMilliseconds, 1000) {
             @Override
@@ -83,23 +116,28 @@ public class WordGameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                textView.setText("끝");
+                //saveDataToFirestore();
+                listData.add("단어게임");
+                listData.add(Integer.toString(answerint));
+                listData.add(Integer.toString(numberint));
+                listData.add(timeLeftText);
+                map.put("단어게임", listData);
+                saveDataToFirestore();
+                word_score.setText("시간 끝");
                 chosung1.setVisibility(View.INVISIBLE);
                 chosung2.setVisibility(View.INVISIBLE);
                 chosung3.setVisibility(View.INVISIBLE);
-                define.setVisibility(View.INVISIBLE);
                 edittext1.setVisibility(View.INVISIBLE);
                 button1.setVisibility(View.INVISIBLE);
             }
         }.start();
 
-
+        timerRunning = true;
     }
     public void updateTimer(){
         int minutes = (int)timeLeftInMilliseconds/60000;
         int seconds = (int)timeLeftInMilliseconds% 60000 / 1000;
 
-        String timeLeftText;
 
         timeLeftText= "" + minutes;
         timeLeftText +=":";
@@ -109,18 +147,28 @@ public class WordGameActivity extends AppCompatActivity {
         countdownText.setText(timeLeftText);
     }
 
+    public void stopTimer(){
+        countdownTimer.cancel();
+        timerRunning = false;
+    }
 
     public void mOnClick(View v) {
         switch (v.getId()) {
             case R.id.button1:
                 CheckAnswer(edittext1.getText().toString());
                 edittext1.setText(null);
-                textView.setText("정답 수 : " + String.valueOf(answerint) + " / " + String.valueOf(numberint));
+                word_score.setText("정답 수 : " + answerint + " / " + numberint);
                 if (numberint == 10) {
+                    stopTimer();
+                    listData.add("단어게임");
+                    listData.add(Integer.toString(answerint));
+                    listData.add(Integer.toString(numberint));
+                    listData.add(timeLeftText);
+                    map.put("단어게임", listData);
+                    saveDataToFirestore();
                     chosung1.setVisibility(View.INVISIBLE);
                     chosung2.setVisibility(View.INVISIBLE);
                     chosung3.setVisibility(View.INVISIBLE);
-                    define.setVisibility(View.INVISIBLE);
                     edittext1.setVisibility(View.INVISIBLE);
                     button1.setVisibility(View.INVISIBLE);
                 }
